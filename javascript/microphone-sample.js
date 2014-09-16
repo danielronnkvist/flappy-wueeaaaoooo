@@ -15,17 +15,9 @@
  */
 
 // Start off by initializing a new context.
-if (! window.AudioContext) {
-    if (! window.webkitAudioContext) {
-        alert('no audiocontext found');
-    }
-    window.AudioContext = window.webkitAudioContext;
-}
-navigator.getUserMedia = ( navigator.getUserMedia ||
-                       navigator.webkitGetUserMedia ||
-                       navigator.mozGetUserMedia ||
-                       navigator.msGetUserMedia);
+var AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
+
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function(){
 return  window.requestAnimationFrame       ||
@@ -50,9 +42,16 @@ function MicrophoneSample() {
 }
 
 MicrophoneSample.prototype.getMicrophoneInput = function() {
-  navigator.getUserMedia({audio: true},
-                          this.onStream.bind(this),
-                          this.onStreamError.bind(this));
+  if(navigator.getUserMedia)
+  {
+    navigator.getUserMedia({audio: true},
+                            this.onStream.bind(this),
+                            this.onStreamError.bind(this));
+  }
+  else
+  {
+    this.onStreamError.bind("getUserMedia not supported")
+  }
 };
 
 MicrophoneSample.prototype.onStream = function(stream) {
