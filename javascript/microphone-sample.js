@@ -15,7 +15,13 @@
  */
 
 // Start off by initializing a new context.
-context = new (window.AudioContext || window.webkitAudioContext)();
+if (! window.AudioContext) {
+    if (! window.webkitAudioContext) {
+        alert('no audiocontext found');
+    }
+    window.AudioContext = window.webkitAudioContext;
+}
+var context = new AudioContext();
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function(){
 return  window.requestAnimationFrame       ||
