@@ -21,6 +21,10 @@ if (! window.AudioContext) {
     }
     window.AudioContext = window.webkitAudioContext;
 }
+navigator.getUserMedia = ( navigator.getUserMedia ||
+                       navigator.webkitGetUserMedia ||
+                       navigator.mozGetUserMedia ||
+                       navigator.msGetUserMedia);
 var context = new AudioContext();
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function(){
