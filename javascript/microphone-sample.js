@@ -57,8 +57,11 @@ MicrophoneSample.prototype.getMicrophoneInput = function() {
 MicrophoneSample.prototype.onStream = function(stream) {
   var input = context.createMediaStreamSource(stream);
   var filter = context.createBiquadFilter();
-  filter.frequency.value = 60.0;
+  // allows all frequencies through except for a set (band-stop)
   filter.type = filter.NOTCH;
+  // the center frequency of where the notch is applied
+  filter.frequency.value = 60.0;
+  // controls the width of the band frequency, large value - narrow width
   filter.Q = 10.0;
 
   var analyser = context.createAnalyser();
@@ -89,8 +92,9 @@ MicrophoneSample.prototype.visualize = function() {
     var height = this.HEIGHT * percent;
     var offset = this.HEIGHT - height - 1;
     var barWidth = this.WIDTH/times.length;
-    drawContext.fillStyle = 'black';
+    drawContext.fillStyle = 'blue';
     drawContext.fillRect(i * barWidth, offset, 1, 1);
   }
+
   requestAnimFrame(this.visualize.bind(this));
 };
