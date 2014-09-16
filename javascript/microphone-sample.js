@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
+// Start off by initializing a new context.
+context = new (window.AudioContext || window.webkitAudioContext)();
+// shim layer with setTimeout fallback
+window.requestAnimFrame = (function(){
+return  window.requestAnimationFrame       ||
+  window.webkitRequestAnimationFrame ||
+  window.mozRequestAnimationFrame    ||
+  window.oRequestAnimationFrame      ||
+  window.msRequestAnimationFrame     ||
+  function( callback ){
+  window.setTimeout(callback, 1000 / 60);
+};
+})();
 
 navigator.getUserMedia = (navigator.getUserMedia ||
                           navigator.webkitGetUserMedia ||
