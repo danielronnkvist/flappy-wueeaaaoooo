@@ -1,6 +1,6 @@
 var AudioContext = window.AudioContext || window.webkitAudioContext;
-window.requestAnimFrame = (function(){
-  return  window.requestAnimationFrame       ||
+window.requestAnimFrame =
+          window.requestAnimationFrame       ||
           window.webkitRequestAnimationFrame ||
           window.mozRequestAnimationFrame    ||
           window.oRequestAnimationFrame      ||
@@ -8,7 +8,6 @@ window.requestAnimFrame = (function(){
           function( callback ){
             window.setTimeout(callback, 1000 / 60);
           };
-})();
 navigator.getUserMedia = navigator.getUserMedia       ||
                          navigator.webkitGetUserMedia ||
                          navigator.mozGetUserMedia    ||
@@ -21,9 +20,9 @@ var analyser = null;
 
 function liveInput()
 {
-  if(getUserMedia)
+  if(navigator.getUserMedia)
   {
-    getUserMedia({audio:true}, getStream, error);
+    navigator.getUserMedia({audio:true}, getStream, error);
   }
   else
   {
@@ -62,3 +61,4 @@ function error(e)
 {
   console.error("Error", e)
 }
+liveInput()
