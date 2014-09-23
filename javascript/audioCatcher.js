@@ -1,13 +1,16 @@
 var AudioContext = window.AudioContext || window.webkitAudioContext;
+
 window.requestAnimFrame =
           window.requestAnimationFrame       ||
           window.webkitRequestAnimationFrame ||
           window.mozRequestAnimationFrame    ||
           window.oRequestAnimationFrame      ||
           window.msRequestAnimationFrame     ||
-          function( callback ){
+          function( callback )
+          {
             window.setTimeout(callback, 1000 / 60);
           };
+          
 navigator.getUserMedia = navigator.getUserMedia       ||
                          navigator.webkitGetUserMedia ||
                          navigator.mozGetUserMedia    ||
