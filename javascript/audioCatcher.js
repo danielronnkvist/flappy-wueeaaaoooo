@@ -10,7 +10,7 @@ window.requestAnimFrame =
           {
             window.setTimeout(callback, 1000 / 60);
           };
-          
+
 navigator.getUserMedia = navigator.getUserMedia       ||
                          navigator.webkitGetUserMedia ||
                          navigator.mozGetUserMedia    ||
@@ -19,6 +19,7 @@ navigator.getUserMedia = navigator.getUserMedia       ||
 var audioContext = new AudioContext();
 var canvas = document.getElementById('canvas');
 var analyser = null;
+var trace = []
 
 
 function liveInput()
@@ -49,17 +50,39 @@ function getStream(stream)
   // Good bandpass values might be from 150 to 4000
   //
 
-  startAnalasys()
+  requestAnimFrame(analasys)
 }
 
-function startAnalasys()
+function analasys()
 {
   var buffer = new Uint8Array(this.analyser.frequencyBinCount);
-  analyser.getByteTimeDomainData(buffer);
+  analyser.getByteFrequencyData(buffer);
+  var max_index = 0
+  for(var i = 1; i < buffer.length; i++)
+  {
+    if(buffer[i] > buffer[0])
+    {
+      max_index = i;
+    }
+  }
+  // Should set a max limit to how many records there can be in trace
+  trace.push(buffer[max_index])
+  var x = []
+  var a = []
+  for(var i = trace.length-1; i >= 0; i-=4)
+  {
+    x.push(i);
+    a.push(i);
+  }
+  var data = interpolate(a,x,trace)
 
-  var correlation = correlate(buffer, audioContext.sampleRate);
+  document.getElementById('freq').innerHTML = buffer[max_index]
+  document.getElementById('calc').innerHTML = data[a.length-1]
+
+  // var correlation = correlate(buffer, audioContext.sampleRate);
 
   // get that pitch shit to make som game magic
+  requestAnimFrame(analasys)
 }
 
 function correlate(buffer, sampleRate)
