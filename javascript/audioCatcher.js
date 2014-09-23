@@ -39,6 +39,13 @@ function getStream(stream)
   analyser.fftSize = 2048;
   mediaStream.connect(analyser);
 
+  // Add filter
+  // First a bandpassfilter for catching all frequencies a human can produce
+  // Then boost the more common with a peaking- or bandpass-filter
+
+  // Good bandpass values might be from 150 to 4000
+  //
+
   startAnalasys()
 }
 
@@ -62,3 +69,33 @@ function error(e)
   console.error("Error", e)
 }
 liveInput()
+
+// Polynomial interpolation
+// a is the values of on the outgoing x-axis
+// x is measured x-values
+// f is measured function-values
+function interpolate(a,x,f)
+{
+  // l is outgoing y values
+  var l = []
+  var aux = 0;
+  var temp = 1;
+  for(var k = 0; k < a.length; k++)
+  {
+    for(var i = 0; i < x.length; i++)
+    {
+      for(var j = 0; j < x.length; j++)
+      {
+        if(i != j)
+        {
+            temp *= (a[k]-x[j])/(x[i]-x[j])
+        }
+      }
+      aux += f[i]*temp;
+      temp = 1;
+    }
+    l.push(aux);
+    aux = 0;
+  }
+  return l;
+}
