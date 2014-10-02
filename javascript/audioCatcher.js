@@ -57,10 +57,10 @@ function getStream(stream)
 
 
 
-  requestAnimFrame(analasys)
+  requestAnimFrame(analysis)
 }
 
-function analasys()
+function analysis()
 {
   var buffer = new Uint8Array(this.analyser.frequencyBinCount);
 
@@ -91,7 +91,7 @@ function analasys()
   // var correlation = correlate(buffer, audioContext.sampleRate);
 
   // get that pitch shit to make som game magic
-  requestAnimFrame(analasys)
+  requestAnimFrame(analysis)
 }
 
 function correlate(buffer, sampleRate)
