@@ -29,7 +29,7 @@ function liveInput()
   }
   else
   {
-    error("No getUserMedia")
+    error("No getUserMedia");
   }
 }
 
@@ -61,10 +61,12 @@ function getStream(stream)
 
   // Good bandpass values might be from 150 to 4000
 
-  requestAnimFrame(analasys)
+
+
+  requestAnimFrame(analysis)
 }
 
-function analasys()
+function analysis()
 {
   var bufferLength = analyser.frequencyBinCount
   var buffer = new Float32Array(bufferLength);
@@ -99,6 +101,34 @@ function analasys()
 
   // get that pitch shit to make som game magic
   setTimeout(analasys,50)
+}
+
+function correlate(buffer, sampleRate)
+{
+  // get some pitch shit
+  //buffer = Math.log(Math.abs(buffer));
+  //this.analyser.getByteTimeDomainData(Math.log(Math.abs(buffer)));
+
+  var ms2 = Math.floor(sampleRate * 0.001);
+  var ms20 = Math.floor(sampleRate * 0.1);
+  var max = 0;
+  var count = 0;
+
+  for (var j = ms2; j < ms20 ; j++)
+  {
+    var temp = Math.abs(buffer[j]);
+    if(temp > max)
+    {
+      max = temp;
+      count++;
+    }
+  }
+  max = sampleRate / (ms2+count-1);
+  if(max < 500)
+  {
+    console.log(max);
+  }
+  return max;
 }
 
 function error(e)
