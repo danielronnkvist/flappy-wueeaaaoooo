@@ -100,7 +100,7 @@ function analysis()
   // var correlation = correlate(buffer, audioContext.sampleRate);
 
   // get that pitch shit to make som game magic
-  setTimeout(analasys,50)
+  setTimeout(analysis,50)
 }
 
 function correlate(buffer, sampleRate)
