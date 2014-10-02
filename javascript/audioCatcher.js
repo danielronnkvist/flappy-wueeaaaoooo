@@ -21,7 +21,6 @@ var canvas = document.getElementById('canvas');
 var analyser = null;
 var trace = []
 
-
 function liveInput()
 {
   if(navigator.getUserMedia)
@@ -41,6 +40,7 @@ function getStream(stream)
   // Create analyser
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 2048;
+  analyser.smoothingTimeConstant = 1;
   mediaStream.connect(analyser);
 
   // Add filter
@@ -48,46 +48,45 @@ function getStream(stream)
   // Then boost the more common with a peaking- or bandpass-filter
 
   // Good bandpass values might be from 150 to 4000
-  //
 
   requestAnimFrame(analasys)
 }
 
 function analasys()
 {
-  var buffer = new Uint8Array(this.analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(buffer);
-  var max_index = 0
-  for(var i = 1; i < buffer.length; i++)
-  {
-    if(buffer[i] > buffer[0])
-    {
-      max_index = i;
-    }
-  }
-  // Should set a max limit to how many records there can be in trace
-  trace.push(buffer[max_index])
-  var x = []
-  var a = []
-  for(var i = trace.length-1; i >= 0; i-=4)
-  {
-    x.push(i);
-    a.push(i);
-  }
-  var data = interpolate(a,x,trace)
+  var bufferLength = analyser.fftSize
+  var buffer = new Float32Array(bufferLength);
+  analyser.getFloatTimeDomainData(buffer);
 
-  document.getElementById('freq').innerHTML = buffer[max_index]
-  document.getElementById('calc').innerHTML = data[a.length-1]
+  var max_index = 0;
+  for(var i = 1; i < bufferLength; i++)
+  {
+    if(buffer[i] > buffer[max_index])
+      max_index = i;
+  }
+
+  var threshold = 0.2
+  var peaks = []
+  for(var i = 0; i < bufferLength; i++)
+  {
+    if(buffer[i] > (buffer[max_index]-threshold))
+      peaks.push(i);
+  }
+
+  var sum = 0;
+  for(var i = 0; i < peaks.length; i++)
+  {
+    sum += peaks[i];
+  }
+  var freq = sum / peaks.length;
+
+  document.getElementById('freq').innerHTML = Math.abs(freq-1023.5)
+  document.getElementById('max').innerHTML = max_index
 
   // var correlation = correlate(buffer, audioContext.sampleRate);
 
   // get that pitch shit to make som game magic
   requestAnimFrame(analasys)
-}
-
-function correlate(buffer, sampleRate)
-{
-  // get some pitch shit
 }
 
 function error(e)
@@ -114,7 +113,8 @@ function interpolate(a,x,f)
       {
         if(i != j)
         {
-            temp *= (a[k]-x[j])/(x[i]-x[j])
+          temp *= (k-x[j])/(x[i]-x[j])
+          console.log(temp)
         }
       }
       aux += f[i]*temp;
@@ -124,4 +124,20 @@ function interpolate(a,x,f)
     aux = 0;
   }
   return l;
+}
+
+function addTrace(val)
+{
+  if(trace.length > 50)
+  {
+    var aux = []
+    for(var i = 1; i < 50; i++)
+    {
+      aux.push(trace[i]);
+    }
+    aux.push(val)
+    trace = aux;
+  }
+  else
+    trace.push(val)
 }
