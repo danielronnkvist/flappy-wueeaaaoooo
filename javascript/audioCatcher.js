@@ -30,7 +30,7 @@ function liveInput()
   }
   else
   {
-    error("No getUserMedia")
+    error("No getUserMedia");
   }
 }
 
@@ -39,9 +39,14 @@ function getStream(stream)
   var mediaStream = audioContext.createMediaStreamSource(stream);
 
   // Create analyser
+  var filter = audioContext.createBiquadFilter();
+  filter.type = filter.NOCTH;
+  filter.frequency.value = 60.0;
+
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 2048;
-  mediaStream.connect(analyser);
+  mediaStream.connect(filter);
+  filter.connect(analyser);
 
   // Add filter
   // First a bandpassfilter for catching all frequencies a human can produce
@@ -50,12 +55,15 @@ function getStream(stream)
   // Good bandpass values might be from 150 to 4000
   //
 
+
+
   requestAnimFrame(analasys)
 }
 
 function analasys()
 {
   var buffer = new Uint8Array(this.analyser.frequencyBinCount);
+
   analyser.getByteFrequencyData(buffer);
   var max_index = 0
   for(var i = 1; i < buffer.length; i++)
@@ -75,9 +83,10 @@ function analasys()
     a.push(i);
   }
   var data = interpolate(a,x,trace)
-
+  var data2 = correlate(buffer, 24000);
   document.getElementById('freq').innerHTML = buffer[max_index]
   document.getElementById('calc').innerHTML = data[a.length-1]
+  document.getElementById('freq2').innerHTML = data2
 
   // var correlation = correlate(buffer, audioContext.sampleRate);
 
@@ -88,6 +97,29 @@ function analasys()
 function correlate(buffer, sampleRate)
 {
   // get some pitch shit
+  //buffer = Math.log(Math.abs(buffer));
+  //this.analyser.getByteTimeDomainData(Math.log(Math.abs(buffer)));
+
+  var ms2 = Math.floor(sampleRate * 0.001);
+  var ms20 = Math.floor(sampleRate * 0.1);
+  var max = 0;
+  var count = 0;
+
+  for (var j = ms2; j < ms20 ; j++)
+  {
+    var temp = Math.abs(buffer[j]);
+    if(temp > max)
+    {
+      max = temp;
+      count++;
+    }
+  }
+  max = sampleRate / (ms2+count-1);
+  if(max < 500)                   
+  {
+    console.log(max);
+  }
+  return max;
 }
 
 function error(e)
