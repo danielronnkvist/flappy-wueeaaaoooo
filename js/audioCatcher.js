@@ -21,7 +21,6 @@ var canvas = document.getElementById('canvas');
 var analyser = null;
 var trace = []
 
-
 function liveInput()
 {
   if(navigator.getUserMedia)
@@ -39,21 +38,28 @@ function getStream(stream)
   var mediaStream = audioContext.createMediaStreamSource(stream);
 
   // Create analyser
-  var filter = audioContext.createBiquadFilter();
-  filter.type = filter.NOCTH;
-  filter.frequency.value = 60.0;
+  // var filter = audioContext.createBiquadFilter();
+  // filter.type = filter.bandpass;
+  // filter.frequency.value = 600.0;
+  // filter.Q.value = 300;
 
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 2048;
-  mediaStream.connect(filter);
-  filter.connect(analyser);
+  // analyser.frequencyBinCount = 10000;
+  analyser.smoothingTimeConstant = 0.5;
+  mediaStream.connect(analyser)
+  // mediaStream.connect(filter);
+  // filter.connect(analyser)
+
+  // console.log(analyser)
+  // console.log(mediaStream)
+  // console.log(filter)
 
   // Add filter
   // First a bandpassfilter for catching all frequencies a human can produce
   // Then boost the more common with a peaking- or bandpass-filter
 
   // Good bandpass values might be from 150 to 4000
-  //
 
 
 
@@ -62,36 +68,39 @@ function getStream(stream)
 
 function analysis()
 {
-  var buffer = new Uint8Array(this.analyser.frequencyBinCount);
+  var bufferLength = analyser.frequencyBinCount
+  var buffer = new Float32Array(bufferLength);
+  analyser.getFloatFrequencyData(buffer);
 
-  analyser.getByteFrequencyData(buffer);
-  var max_index = 0
-  for(var i = 1; i < buffer.length; i++)
+  var max_index = 0;
+  for(var i = 1; i < bufferLength; i++)
   {
-    if(buffer[i] > buffer[0])
-    {
+    if((buffer[i]) > (buffer[max_index]))
       max_index = i;
-    }
   }
-  // Should set a max limit to how many records there can be in trace
-  trace.push(buffer[max_index])
-  var x = []
-  var a = []
-  for(var i = trace.length-1; i >= 0; i-=4)
+
+  var threshold = 5
+  var peaks = []
+  for(var i = 0; i < bufferLength; i++)
   {
-    x.push(i);
-    a.push(i);
+    if(buffer[i] > (buffer[max_index]-threshold))
+      peaks.push(i);
   }
-  var data = interpolate(a,x,trace)
-  var data2 = correlate(buffer, 24000);
-  document.getElementById('freq').innerHTML = buffer[max_index]
-  document.getElementById('calc').innerHTML = data[a.length-1]
-  document.getElementById('freq2').innerHTML = data2
+
+  var sum = 0;
+  for(var i = 0; i < peaks.length; i++)
+  {
+    sum += peaks[i];
+  }
+  var freq = sum / peaks.length;
+
+  document.getElementById('freq').innerHTML = Math.abs(freq*20)
+  document.getElementById('max').innerHTML = max_index*20
 
   // var correlation = correlate(buffer, audioContext.sampleRate);
 
   // get that pitch shit to make som game magic
-  requestAnimFrame(analysis)
+  setTimeout(analysis,50)
 }
 
 function correlate(buffer, sampleRate)
@@ -115,7 +124,7 @@ function correlate(buffer, sampleRate)
     }
   }
   max = sampleRate / (ms2+count-1);
-  if(max < 500)                   
+  if(max < 500)
   {
     console.log(max);
   }
@@ -146,7 +155,8 @@ function interpolate(a,x,f)
       {
         if(i != j)
         {
-            temp *= (a[k]-x[j])/(x[i]-x[j])
+          temp *= (k-x[j])/(x[i]-x[j])
+          console.log(temp)
         }
       }
       aux += f[i]*temp;
@@ -156,4 +166,20 @@ function interpolate(a,x,f)
     aux = 0;
   }
   return l;
+}
+
+function addTrace(val)
+{
+  if(trace.length > 50)
+  {
+    var aux = []
+    for(var i = 1; i < 50; i++)
+    {
+      aux.push(trace[i]);
+    }
+    aux.push(val)
+    trace = aux;
+  }
+  else
+    trace.push(val)
 }
