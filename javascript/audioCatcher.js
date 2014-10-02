@@ -38,10 +38,22 @@ function getStream(stream)
   var mediaStream = audioContext.createMediaStreamSource(stream);
 
   // Create analyser
+  // var filter = audioContext.createBiquadFilter();
+  // filter.type = filter.bandpass;
+  // filter.frequency.value = 600.0;
+  // filter.Q.value = 300;
+
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 2048;
-  analyser.smoothingTimeConstant = 1;
-  mediaStream.connect(analyser);
+  // analyser.frequencyBinCount = 10000;
+  analyser.smoothingTimeConstant = 0.5;
+  mediaStream.connect(analyser)
+  // mediaStream.connect(filter);
+  // filter.connect(analyser)
+
+  // console.log(analyser)
+  // console.log(mediaStream)
+  // console.log(filter)
 
   // Add filter
   // First a bandpassfilter for catching all frequencies a human can produce
@@ -54,18 +66,18 @@ function getStream(stream)
 
 function analasys()
 {
-  var bufferLength = analyser.fftSize
+  var bufferLength = analyser.frequencyBinCount
   var buffer = new Float32Array(bufferLength);
-  analyser.getFloatTimeDomainData(buffer);
+  analyser.getFloatFrequencyData(buffer);
 
   var max_index = 0;
   for(var i = 1; i < bufferLength; i++)
   {
-    if(buffer[i] > buffer[max_index])
+    if((buffer[i]) > (buffer[max_index]))
       max_index = i;
   }
 
-  var threshold = 0.2
+  var threshold = 5
   var peaks = []
   for(var i = 0; i < bufferLength; i++)
   {
@@ -80,13 +92,13 @@ function analasys()
   }
   var freq = sum / peaks.length;
 
-  document.getElementById('freq').innerHTML = Math.abs(freq-1023.5)
-  document.getElementById('max').innerHTML = max_index
+  document.getElementById('freq').innerHTML = Math.abs(freq*20)
+  document.getElementById('max').innerHTML = max_index*20
 
   // var correlation = correlate(buffer, audioContext.sampleRate);
 
   // get that pitch shit to make som game magic
-  requestAnimFrame(analasys)
+  setTimeout(analasys,50)
 }
 
 function error(e)
