@@ -303,7 +303,7 @@ function Boot() {
 
 Boot.prototype = {
   preload: function() {
-    this.load.image('preloader', 'assets/preloader.gif');
+    this.load.image('preloader', 'images/preloader.gif');
   },
   create: function() {
     this.game.input.maxPointers = 1;
@@ -551,13 +551,13 @@ Preload.prototype = {
     this.load.image('gameover', 'images/gameover2.png');
     this.load.image('particle', 'images/particle.png');
 
-    this.load.audio('flap', 'assets/flap.wav');
-    this.load.audio('pipeHit', 'assets/pipe-hit.wav');
-    this.load.audio('groundHit', 'assets/ground-hit.wav');
-    this.load.audio('score', 'assets/score.wav');
-    this.load.audio('ouch', 'assets/ouch.wav');
+    this.load.audio('flap', 'sounds/flap.wav');
+    this.load.audio('pipeHit', 'sounds/pipe-hit.wav');
+    this.load.audio('groundHit', 'sounds/ground-hit.wav');
+    this.load.audio('score', 'sounds/score.wav');
+    this.load.audio('ouch', 'sounds/ouch.wav');
 
-    this.load.bitmapFont('flappyfont', 'images/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
+    this.load.bitmapFont('flappyfont', 'images/flappyfont.png', 'fonts/flappyfont.fnt');
 
   },
   create: function() {
