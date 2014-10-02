@@ -20,6 +20,7 @@ var audioContext = new AudioContext();
 var canvas = document.getElementById('canvas');
 var analyser = null;
 var trace = []
+var y_value = 0;
 
 function liveInput()
 {
@@ -61,9 +62,6 @@ function getStream(stream)
 
   // Good bandpass values might be from 150 to 4000
 
-
-
-  requestAnimFrame(analysis)
 }
 
 function analysis()
@@ -97,10 +95,12 @@ function analysis()
   document.getElementById('freq').innerHTML = Math.abs(freq*20)
   document.getElementById('max').innerHTML = max_index*20
 
+  return max_index*20
+
   // var correlation = correlate(buffer, audioContext.sampleRate);
 
   // get that pitch shit to make som game magic
-  setTimeout(analysis,50)
+
 }
 
 function correlate(buffer, sampleRate)

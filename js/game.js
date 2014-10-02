@@ -65,13 +65,11 @@ Bird.prototype.update = function() {
 };
 
 Bird.prototype.flap = function() {
-  if(!!this.alive) {
     this.flapSound.play();
     //cause our bird to "jump" upward
-    this.body.velocity.y = -400;
+    this.body.velocity.y = -(analysis()-400);
     // rotate the bird to -40 degrees
     this.game.add.tween(this).to({angle: -40}, 100).start();
-  }
 };
 
 Bird.prototype.revived = function() {
@@ -394,7 +392,7 @@ Play.prototype = {
 
 
     // give our world an initial gravity of 1200
-    this.game.physics.arcade.gravity.y = 1200;
+    this.game.physics.arcade.gravity.y = 0;
 
     // add the background sprite
     this.background = this.game.add.sprite(0,0,'background');
@@ -417,7 +415,6 @@ Play.prototype = {
     this.flapKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.flapKey.onDown.addOnce(this.startGame, this);
     this.flapKey.onDown.add(this.bird.flap, this.bird);
-
 
     // add mouse/touch controls
     this.game.input.onDown.addOnce(this.startGame, this);
