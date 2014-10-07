@@ -97,7 +97,7 @@ function analysis()
   document.getElementById('freq').innerHTML = Math.abs(freq*20);
   document.getElementById('max').innerHTML = max_index*20;
 
-  var result = (max_index*20)*2;
+  var result = (freq*20)*2;
   console.log(result);
 
   return result;
