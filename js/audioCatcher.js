@@ -39,18 +39,18 @@ function getStream(stream)
   var mediaStream = audioContext.createMediaStreamSource(stream);
 
   // Create analyser
-  // var filter = audioContext.createBiquadFilter();
-  // filter.type = filter.bandpass;
-  // filter.frequency.value = 600.0;
-  // filter.Q.value = 300;
+  var filter = audioContext.createBiquadFilter();
+  filter.type = filter.bandpass;
+  filter.frequency.value = 600.0;
+  filter.Q.value = 1;
 
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 2048;
   // analyser.frequencyBinCount = 10000;
   analyser.smoothingTimeConstant = 0.5;
-  mediaStream.connect(analyser)
-  // mediaStream.connect(filter);
-  // filter.connect(analyser)
+  // mediaStream.connect(analyser);
+  mediaStream.connect(filter);
+  filter.connect(analyser)
 
   // console.log(analyser)
   // console.log(mediaStream)
@@ -66,7 +66,7 @@ function getStream(stream)
 
 function analysis()
 {
-  var bufferLength = analyser.frequencyBinCount
+  var bufferLength = analyser.frequencyBinCount;
   var buffer = new Float32Array(bufferLength);
   analyser.getFloatFrequencyData(buffer);
 
@@ -95,15 +95,10 @@ function analysis()
   document.getElementById('freq').innerHTML = Math.abs(freq*20);
   document.getElementById('max').innerHTML = max_index*20;
 
-  var result = (max_index*20) * 2;
+  var result = (max_index*20)*2;
   console.log(result);
 
   return result;
-
-  // var correlation = correlate(buffer, audioContext.sampleRate);
-
-  // get that pitch shit to make som game magic
-
 }
 
 function error(e)

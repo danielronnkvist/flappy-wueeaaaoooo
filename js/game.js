@@ -67,7 +67,7 @@ Bird.prototype.update = function() {
 Bird.prototype.flap = function() {
     this.flapSound.play();
     //cause our bird to "jump" upward
-    ;
+
     // rotate the bird to -40 degrees
     this.game.add.tween(this).to({angle: -40}, 100).start();
 };
@@ -449,7 +449,7 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
 
     if(!this.gameover) {
-      this.bird.body.velocity.y = -(analysis()-500);
+      this.bird.body.velocity.y = -(analysis()-550);
       console.log(this.bird.body.velocity.y)
       this.game.add.tween(this).to({angle: 0}, 100).start();
         // enable collisions between the bird and each group in the pipes group
