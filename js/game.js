@@ -67,9 +67,8 @@ Bird.prototype.update = function() {
 Bird.prototype.flap = function() {
     this.flapSound.play();
     //cause our bird to "jump" upward
-    ;
     // rotate the bird to -40 degrees
-    this.game.add.tween(this).to({angle: -40}, 100).start();
+    //this.game.add.tween(this).to({angle: -1}, 100).start();
 };
 
 Bird.prototype.revived = function() {
@@ -449,6 +448,7 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
 
     if(!this.gameover) {
+      //subtract to get a threshold to go up and down, not only up
       this.bird.body.velocity.y = -(analysis()-500);
       console.log(this.bird.body.velocity.y)
       this.game.add.tween(this).to({angle: 0}, 100).start();

@@ -70,6 +70,7 @@ function analysis()
   var buffer = new Float32Array(bufferLength);
   analyser.getFloatFrequencyData(buffer);
 
+  //find the frequency with largest peak
   var max_index = 0;
   for(var i = 1; i < bufferLength; i++)
   {
@@ -77,6 +78,7 @@ function analysis()
       max_index = i;
   }
 
+  //take the mean value of all the frequencies over the threshold
   var threshold = 5;
   var peaks = [];
   for(var i = 0; i < bufferLength; i++)
