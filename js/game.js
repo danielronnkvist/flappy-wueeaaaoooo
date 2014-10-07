@@ -449,7 +449,7 @@ Play.prototype = {
 
     if(!this.gameover) {
       //subtract to get a threshold to go up and down, not only up
-      this.bird.body.velocity.y = -(analysis()-500);
+      this.bird.body.velocity.y = -(analysis()-550);
       console.log(this.bird.body.velocity.y)
       this.game.add.tween(this).to({angle: 0}, 100).start();
         // enable collisions between the bird and each group in the pipes group
