@@ -77,8 +77,8 @@ function analysis()
       max_index = i;
   }
 
-  var threshold = 5
-  var peaks = []
+  var threshold = 5;
+  var peaks = [];
   for(var i = 0; i < bufferLength; i++)
   {
     if(buffer[i] > (buffer[max_index]-threshold))
@@ -92,10 +92,13 @@ function analysis()
   }
   var freq = sum / peaks.length;
 
-  document.getElementById('freq').innerHTML = Math.abs(freq*20)
-  document.getElementById('max').innerHTML = max_index*20
+  document.getElementById('freq').innerHTML = Math.abs(freq*20);
+  document.getElementById('max').innerHTML = max_index*20;
 
-  return max_index*20
+  var result = (max_index*20) * 2;
+  console.log(result);
+
+  return result;
 
   // var correlation = correlate(buffer, audioContext.sampleRate);
 

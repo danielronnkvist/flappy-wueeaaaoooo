@@ -67,7 +67,7 @@ Bird.prototype.update = function() {
 Bird.prototype.flap = function() {
     this.flapSound.play();
     //cause our bird to "jump" upward
-    this.body.velocity.y = -(analysis()-400);
+    ;
     // rotate the bird to -40 degrees
     this.game.add.tween(this).to({angle: -40}, 100).start();
 };
@@ -410,16 +410,16 @@ Play.prototype = {
     this.ground = new Ground(this.game, 0, 400, 335, 112);
     this.game.add.existing(this.ground);
 
+    this.bird.body.velocity.y = 0;
 
     // add keyboard controls
     this.flapKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.flapKey.onDown.addOnce(this.startGame, this);
-    this.flapKey.onDown.add(this.bird.flap, this.bird);
+    // this.flapKey.onDown.add(this.bird.flap, this.bird);
 
-    // add mouse/touch controls
+    // // add mouse/touch controls
     this.game.input.onDown.addOnce(this.startGame, this);
-    this.game.input.onDown.add(this.bird.flap, this.bird);
-
+    // this.game.input.onDown.add(this.bird.flap, this.bird);
 
     // keep the spacebar from propogating up to the browser
     this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
@@ -449,6 +449,9 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.bird, this.ground, this.deathHandler, null, this);
 
     if(!this.gameover) {
+      this.bird.body.velocity.y = -(analysis()-500);
+      console.log(this.bird.body.velocity.y)
+      this.game.add.tween(this).to({angle: 0}, 100).start();
         // enable collisions between the bird and each group in the pipes group
         this.pipes.forEach(function(pipeGroup) {
             this.checkScore(pipeGroup);
