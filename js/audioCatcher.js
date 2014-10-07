@@ -87,6 +87,7 @@ function analysis()
       peaks.push(i);
   }
 
+  //take the sum and devide by mean
   var sum = 0;
   for(var i = 0; i < peaks.length; i++)
   {
@@ -94,10 +95,11 @@ function analysis()
   }
   var freq = sum / peaks.length;
 
-  document.getElementById('freq').innerHTML = Math.abs(freq*20);
-  document.getElementById('max').innerHTML = max_index*20;
+  document.getElementById('freq').innerHTML = Math.abs(freq*19.5);
+  document.getElementById('max').innerHTML = max_index*19.5;
 
-  var result = (max_index*20) * 2;
+  //samples from 0-20000 Hz, multiply by 19.5 to get the right frequency
+  var result = (max_index*19.5) * 2;
   console.log(result);
 
   return result;
