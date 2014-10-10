@@ -31,7 +31,7 @@
 			Bilderna till spelet skapades i Paint och Adobe Photoshop och den illustrerade grafen skapades med hjälp av Adobe Illustrator.
 
 		\subsection{Tillvägagångssätt}
-			För att inte behöva bearbeta ljudet i hela frekvensomfånget(0-20 000 Hz) applicerades ett bandpassfilter på ljudströmmen. Bandpasset valdes att vara mellan 125 och 8000 Hz, detta för att den mänskliga rösten ligger mellan dessa två frekvenser\cite{freq}. Detta filter beräknades fram genom att hitta centrum mellan de två önskade gränserna. Sedan applicerades ett Q-värde vid denna punkt för att uppnå önskat frekvensband.\cite{biqf} Centrumfrekvensen beräknades fram enligt ekvation (1) med $f_1$, minsta värde och $f_2$, största värde. Q-värdet beräknades fram via ekvation (2) med centrumfrekvensen $f_0$ och frekvensbandet $\bigtriangleup f$.\cite{Q} 
+			För att inte behöva bearbeta ljudet i hela frekvensomfånget(0-20 000 Hz) applicerades ett bandpassfilter på ljudströmmen. Bandpasset valdes att vara mellan 125 och 8000 Hz, detta för att den mänskliga rösten ligger mellan dessa två frekvenser\cite{freq}. Detta filter beräknades fram genom att hitta centrum mellan de två önskade gränserna. Sedan applicerades ett Q-värde vid denna punkt för att uppnå önskat frekvensband.\cite{biqf} Centrumfrekvensen beräknades fram enligt ekvation (1) med $f_1$, minsta värde och $f_2$, största värde. Q-värdet beräknades fram via ekvation (2) med centrumfrekvensen $f_0$ och frekvensbandet $\bigtriangleup f$.\cite{Q}
 			\\ \\
 			\begin{equation}
 				\cfrac{f_2 - f_1}{2} + f_1
@@ -80,29 +80,29 @@
 
   \bibitem{MDN}
     Mozilla Developer Network.
-    \emph{Web Audio API.}
+    \emph{Web Audio API.}\newline
     https://developer.mozilla.org/en-US/docs/Web/API/Web\_Audio\_API, 2014-10-07
 
   \bibitem{freq}
     Befria Samtalet.
-    \emph{Fakta om ljudmiljö.}
+    \emph{Fakta om ljudmiljö.}\newline
     http://www.befriasamtalet.se/fakta, 2014-10-08
 
   \bibitem{AnalyserNode}
     Mozilla Developer Network.
-    \emph{AnalyserNode.}
+    \emph{AnalyserNode.}\newline
     https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode, 2014-10-08
 
-   \bibitem{Q}
-    Umeås Universitet
-    \emph{Aktiva filter.}
+  \bibitem{Q}
+    Umeås Universitet.
+    \emph{Aktiva filter.}\newline
     http://www8.tfe.umu.se/courses/elektro/anakrets/TDV00/html/grupp9/, 2014-10-10
 
-   \bibitem{biqf}
-  	Mozilla Developer Network
-    \emph{biqf}
-    https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode
-  
+  \bibitem{biqf}
+  	Mozilla Developer Network.
+    \emph{Biquad Filter.}\newline
+    https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode, 2014-10-10
+
   \end{thebibliography}
 
 \end{document}
