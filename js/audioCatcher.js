@@ -41,14 +41,14 @@ function getStream(stream)
   // Create analyser
   var filter = audioContext.createBiquadFilter();
   filter.type = filter.bandpass;
-  filter.frequency.value = 600.0;
-  filter.Q.value = 1;
+  filter.frequency.value = 3937.5;
+  filter.Q.value = 0.5;
 
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 2048;
-  // analyser.frequencyBinCount = 10000;
   analyser.smoothingTimeConstant = 0.5;
-  // mediaStream.connect(analyser);
+
+
   mediaStream.connect(filter);
   filter.connect(analyser)
 
