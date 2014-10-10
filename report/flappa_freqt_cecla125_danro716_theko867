@@ -30,9 +30,9 @@
 			Bilderna till spelet skapades i Paint och Adobe Photoshop och den illustrerade grafen skapades med hjälp av Adobe Illustrator.
 
 		\subsection{Tillvägagångssätt}
-			För att inte behöva bearbeta ljudet i hela frekvensomfånget(0-20 000 Hz) applicerades ett bandpassfilter på ljudströmmen. Bandpasset valdes att vara mellan 150 och 1500 Hz, detta för att den mänskliga rösten ligger mellan dessa två frekvenser\cite{freq}.
+			För att inte behöva bearbeta ljudet i hela frekvensomfånget(0-20 000 Hz) applicerades ett bandpassfilter på ljudströmmen. Bandpasset valdes att vara mellan 125 och 8000 Hz, detta för att den mänskliga rösten ligger mellan dessa två frekvenser\cite{freq}.
 			\\ \\
-			Ljudetströmmen från mikrofonen skickades genom en \textit{analyser node} vilket gav möjligheten till realtidsinformation om ljudet både i tids- och frekvensdomän. För att få ljudet i frekvensdomän använder sig noden av en fouriertransformering av ljudet och skickar ut frekvensdatan. Denna frekvensinformation kunde sedan användas för att hitta en lämplig nivå för spelet. För fouriertransformen valdes en \textit{fftsize} till 2048 för att bestämma storleken på frekvensdomänen. Men det var bara de positiva värdena som var intressanta vilket gav en halvering av denna fftsize för de givna transformerade värdena\cite{AnalyserNode}.
+			Ljudströmmen från mikrofonen skickades genom en \textit{analyser node} vilket gav möjligheten till realtidsinformation om ljudet både i tids- och frekvensdomän. För att få ljudet i frekvensdomän använder sig noden av en fouriertransformering av ljudet och skickar ut frekvensdatan. Denna frekvensinformation kunde sedan användas för att hitta en lämplig nivå för spelet. För fouriertransformen valdes en \textit{fftsize} till 2048 för att bestämma storleken på frekvensdomänen. Men det var bara de positiva värdena som var intressanta vilket gav en halvering av denna fftsize för de givna transformerade värdena\cite{AnalyserNode}.
 			\\ \\
 			För att analysera ljudet sparades alla inspelade frekvenser i en buffert. Bufferten loopades sedan igenom för att hitta den frekvens med högst amplitud. Från detta amplitudvärde subtraherades ett bestämt tröskelvärde för att hitta en gränsnivå. De frekvenser som låg över denna gräns summerades och den totala summan dividerades med antalet summerade frekvenser för att få fram en medelfrekvens. (Se bild 1.) Eftersom ljudet från mikrofonen samplades med 1024 sampel/frekvensomfång över ett 20 000 Hz omfång multiplicerades medelfrekvensen med 19.5 för att få fram det riktiga frekvensvärdet.
 
@@ -42,7 +42,7 @@
 						\includegraphics[width=1\textwidth]{explanation.png}
   							\caption{En illustration som förklarar hur medelfrekvensen beräknas.}
 				\end{figure}
-			Produkten multiplicerades därefter med en godtycklig konstant som i det här fallet valdes till två. Detta var enbart för spelupplevelsen. 
+			Produkten multiplicerades därefter med en godtycklig konstant som i det här fallet valdes till två. Detta var enbart för spelupplevelsen.
 			\\ \\
 			Den beräknade frekvensen skickades vidare till spelet där den jämfördes med ett nollställe för att avgöra om figuren i spelet skulle åka upp eller ner. Nollstället bestämdes genom att testa olika värden och hitta ett som skapade en bra spelkontroll.
 
