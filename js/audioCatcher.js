@@ -95,9 +95,6 @@ function analysis()
   }
   var freq = sum / peaks.length;
 
-  document.getElementById('freq').innerHTML = Math.abs(freq*19.5);
-  document.getElementById('max').innerHTML = max_index*19.5;
-
   //samples from 0-20000 Hz, multiply by 19.5 to get the right frequency
   var result = (freq*19.5)*2;
   console.log(result);
