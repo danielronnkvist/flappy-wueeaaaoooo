@@ -552,7 +552,7 @@ Preload.prototype = {
     this.load.image('particle', 'images/particle.png');
 
     this.load.audio('flap', 'sounds/flap.wav');
-    this.load.audio('pipeHit', 'sounds/pipe-hit.wav');
+    this.load.audio('pipeHit', 'sounds/ouch.wav');
     this.load.audio('groundHit', 'sounds/ground-hit.wav');
     this.load.audio('score', 'sounds/score.wav');
     this.load.audio('ouch', 'sounds/ouch.wav');
