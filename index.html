@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>FLAPPY</title>
+  <style>
+    body
+    {
+      background-color: #009DFF;
+    }
+    #flappy-bird-reborn
+    {
+      overflow: hidden;
+      margin-top:30%;
+      margin: auto;
+      width: 288px;
+    }
+    .info
+    {
+      width: 50%;
+      text-align: center;
+      margin: auto;
+      margin-top: 20px;
+    }
+    a
+    {
+      color:black;
+    }
+  </style>
 </head>
 <body>
-  read:<h1 id="freq"></h1>
-  max: <h1 id="max"></h1>
-  calculated:<h1 id="calc"></h1>
-  index: <h1 id="calc_index"></h1>
   <div id="flappy-bird-reborn" style="overflow: hidden;margin-top:-400px;">
      <canvas width="288" height="505" style="display: block; touch-action: none; -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); cursor: inherit;"></canvas>
    </div>
+   <p class="info">
+     Välkommen till vårt spel. Dett gjordes i kursen TFYA65 på Linköpings Universitet campus Norrköping höstterminen 2014. Ni kan läsa om allt vi gjorde i vår <a href="report/flappa_freqt_cecla125_danro716_theko867.pdf">rapport</a>
+   </p>
   <script src="js/audioCatcher.js"></script>
   <script src="js/phaser.js"></script>
   <script src="js/game.js"></script>
